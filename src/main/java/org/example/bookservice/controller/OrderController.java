@@ -10,12 +10,13 @@ import org.example.bookservice.model.Book;
 import org.example.bookservice.model.Order;
 import org.example.bookservice.request.OrderRequest;
 import org.example.bookservice.service.OrderService;
-import org.example.bookservice.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RestController()
 @RequestMapping("/")
@@ -73,6 +74,26 @@ public class OrderController {
         } catch (UserHasBorrowedBooksException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("books/{username}")
+    public ResponseEntity<List<Book>> getBooksByUsername(@PathVariable("username") String username) {
+        List<Book> books = orderService.findBookByUserName(username);
+        if (books.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
+
+    @GetMapping("books/borrowed")
+    public ResponseEntity<Set<String>> getAllBorrowedBooksNames() {
+        return new ResponseEntity<>(orderService.getAllBorrowedBooksNames(), HttpStatus.OK);
+    }
+
+
+    @GetMapping("books/borrowed-amount")
+    public ResponseEntity<Map<Book, Integer>> getAllBorrowedBooksAmount() {
+        return new ResponseEntity<>(orderService.countBorrowedBooksByBooksTitle(), HttpStatus.OK);
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -20,4 +21,13 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     boolean existsByUserId(Long userId);
 
     int countByUserId(Long userId);
+
+    @Query("SELECT o.book FROM Order o WHERE o.user.name = :userName")
+    List<Book> findBooksByUserName(String userName);
+
+    List<Book> findAllBorrowedBooks();
+
+    @Query("SELECT o.book, COUNT(o) FROM Order o GROUP BY o.book")
+    List<Object[]> countBorrowedBooksByBooksTitle();
+
 }

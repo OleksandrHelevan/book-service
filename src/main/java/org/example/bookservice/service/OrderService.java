@@ -9,6 +9,8 @@ import org.example.bookservice.model.Order;
 import org.example.bookservice.request.OrderRequest;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface OrderService {
     Order makeOrder(OrderRequest orderRequest) throws AmountIsZeroException, ItemNotFoundException, BookLimitExceededException;
@@ -20,4 +22,10 @@ public interface OrderService {
     List<Order> getOrdersByUserId(Long userId) throws ItemNotFoundException;
 
     void deleteUserById(Long userId) throws UserHasBorrowedBooksException;
+
+    List<Book> findBookByUserName(String username);
+
+    Set<String> getAllBorrowedBooksNames();
+
+    Map<Book, Integer> countBorrowedBooksByBooksTitle();
 }
