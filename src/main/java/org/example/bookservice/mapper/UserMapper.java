@@ -8,14 +8,12 @@ public class UserMapper {
     public static UserDTO toDto(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setName(user.getName());
-        userDTO.setMembershipDate(user.getMembershipDate());
         return userDTO;
     }
 
     public static User toEntity(UserDTO userDTO) {
         User user = new User();
         user.setName(userDTO.getName());
-        user.setMembershipDate(userDTO.getMembershipDate());
         return user;
     }
 }

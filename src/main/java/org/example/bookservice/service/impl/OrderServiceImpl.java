@@ -50,6 +50,7 @@ public class OrderServiceImpl implements OrderService {
         } else {
             throw new AmountIsZeroException("Amount is zero");
         }
+
         return orderRepository.save(new Order(null, user, book));
     }
 
