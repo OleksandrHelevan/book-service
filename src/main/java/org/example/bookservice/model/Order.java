@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name="borrowed_book")
+@Table(name="orders")
 @Data
-public class BorrowedBook {
+public class Order {
     @Id
     private Long id;
 

@@ -38,7 +38,7 @@ VALUES ('John Smith'),
        ('James Anderson'),
        ('Sophia Thomas');
 
-CREATE TABLE borrowed_books
+CREATE TABLE orders
 (
     id IDENTITY PRIMARY KEY,
     member_id     BIGINT NOT NULL,
