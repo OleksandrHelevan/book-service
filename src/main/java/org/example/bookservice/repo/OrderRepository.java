@@ -16,4 +16,8 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     Optional<List<Book>> findBooksByUserId(@Param("userId") Long userId);
 
     Optional<List<Order>> findOrdersByUserId(Long userId);
+
+    boolean existsByUserId(Long userId);
+
+    int countByUserId(Long userId);
 }

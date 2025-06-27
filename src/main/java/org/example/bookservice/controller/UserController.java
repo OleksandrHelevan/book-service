@@ -2,6 +2,7 @@ package org.example.bookservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.bookservice.dto.UserDTO;
+import org.example.bookservice.exception.ItemNotFoundException;
 import org.example.bookservice.mapper.UserMapper;
 import org.example.bookservice.model.User;
 import org.example.bookservice.service.UserService;
@@ -27,4 +28,6 @@ public class UserController {
     public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
         return new ResponseEntity<>(userService.save(UserMapper.toEntity(userDTO)), HttpStatus.CREATED);
     }
+
+
 }

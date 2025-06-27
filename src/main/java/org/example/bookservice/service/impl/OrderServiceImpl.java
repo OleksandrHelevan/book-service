@@ -1,6 +1,9 @@
 package org.example.bookservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.bookservice.exception.BookLimitExceededException;
+import org.example.bookservice.exception.UserHasBorrowedBooksException;
+import org.springframework.beans.factory.annotation.Value;
 import org.example.bookservice.exception.AmountIsZeroException;
 import org.example.bookservice.exception.ItemNotFoundException;
 import org.example.bookservice.model.Book;
@@ -25,7 +28,12 @@ public class OrderServiceImpl implements OrderService {
 
     private final BookRepository bookRepository;
 
-    public Order makeOrder(OrderRequest orderRequest) throws AmountIsZeroException, ItemNotFoundException {
+    @Value("${library.borrow.limit}")
+    private int borrowLimit;
+
+    public Order makeOrder(OrderRequest orderRequest) throws AmountIsZeroException, ItemNotFoundException, BookLimitExceededException {
+        if (orderRepository.countByUserId(orderRequest.userId()) >= borrowLimit)
+            throw new BookLimitExceededException("Book limit exceeded");
 
         User user = userRepository.findById(orderRequest.userId())
                 .orElseThrow(() -> new ItemNotFoundException("User not found"));
@@ -61,5 +69,12 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findOrdersByUserId(userId)
                 .orElseThrow(() -> new ItemNotFoundException("Orders not found"));
     }
+
+    public void deleteUserById(Long userId) throws UserHasBorrowedBooksException {
+        if (orderRepository.existsByUserId(userId))
+            throw new UserHasBorrowedBooksException("User has borrowed books");
+        userRepository.deleteById(userId);
+    }
+
 }
 
