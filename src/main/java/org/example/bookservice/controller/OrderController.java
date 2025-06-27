@@ -1,5 +1,6 @@
 package org.example.bookservice.controller;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.bookservice.exception.AmountIsZeroException;
 import org.example.bookservice.exception.ItemNotFoundException;
@@ -37,21 +38,22 @@ public class OrderController {
     }
 
     @DeleteMapping("/{order_id}")
-    public ResponseEntity<Order> deleteOrder(@PathVariable("order_id") Long order_id) {
+    @Transactional
+    public ResponseEntity<String> deleteOrder(@PathVariable("order_id") Long order_id) {
         try {
-            Order order = orderService.deleteOrderById(order_id);
-            return new ResponseEntity<>(order, HttpStatus.OK);
-        }catch (ItemNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            orderService.deleteOrderById(order_id);
+            return new ResponseEntity<>("order with id " + order_id + " was deleted", HttpStatus.OK);
+        } catch (ItemNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/{user_id}")
     public ResponseEntity<List<Order>> getOrders(@PathVariable("user_id") Long user_id) {
-        try{
+        try {
             List<Order> orders = orderService.getOrdersByUserId(user_id);
-        return new ResponseEntity<>(orders, HttpStatus.OK);
-    }catch (ItemNotFoundException e) {
+            return new ResponseEntity<>(orders, HttpStatus.OK);
+        } catch (ItemNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

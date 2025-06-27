@@ -15,7 +15,5 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     @Query("SELECT o.book FROM Order o WHERE o.user.id = :userId")
     Optional<List<Book>> findBooksByUserId(@Param("userId") Long userId);
 
-    Optional<Order> deleteOrderById(Long id);
-
     Optional<List<Order>> findOrdersByUserId(Long userId);
 }

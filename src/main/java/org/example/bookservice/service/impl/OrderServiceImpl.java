@@ -33,10 +33,9 @@ public class OrderServiceImpl implements OrderService {
         Book book = bookRepository.findById(orderRequest.bookId())
                 .orElseThrow(() -> new ItemNotFoundException("Book not found"));
 
-        if(book.getAmount() > 0) {
+        if (book.getAmount() > 0) {
             book.setAmount(book.getAmount() - 1);
-        }
-        else{
+        } else {
             throw new AmountIsZeroException("Amount is zero");
         }
         return orderRepository.save(new Order(null, user, book));
@@ -48,15 +47,13 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new ItemNotFoundException("Books not found"));
     }
 
-    public Order deleteOrderById(Long orderId) throws ItemNotFoundException {
-
+    public void deleteOrderById(Long orderId) throws ItemNotFoundException {
         Book book = bookRepository.findById(orderId)
                 .orElseThrow(() -> new ItemNotFoundException("Book not found"));
         book.setAmount(book.getAmount() + 1);
-
-        return orderRepository.
-                deleteOrderById(orderId)
-                .orElseThrow(() -> new ItemNotFoundException("Order not found"));
+        if (orderRepository.existsById(orderId))
+            orderRepository.deleteById(orderId);
+        else throw new ItemNotFoundException("Order not found");
     }
 
 

@@ -13,7 +13,7 @@ public interface OrderService {
 
     List<Book> getBooksByUserId(Long userId);
 
-    Order deleteOrderById(Long orderId) throws ItemNotFoundException;
+    void deleteOrderById(Long id);
 
     List<Order> getOrdersByUserId(Long userId) throws ItemNotFoundException;
 }
