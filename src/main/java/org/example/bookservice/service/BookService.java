@@ -8,4 +8,5 @@ import java.util.List;
 public interface BookService {
     List<BookDTO> getBooks();
     Book addBook(BookDTO bookDTO);
+    Book updateBook(BookDTO bookDTO);
 }

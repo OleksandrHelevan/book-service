@@ -29,5 +29,14 @@ public class UserController {
         return new ResponseEntity<>(userService.save(UserMapper.toEntity(userDTO)), HttpStatus.CREATED);
     }
 
+    @PutMapping
+    public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO) {
+        try {
+            User user = userService.update(userDTO);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (ItemNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 }

@@ -9,4 +9,5 @@ public interface UserService {
     List<UserDTO> findAll();
     User save(User user);
     void delete(Long id) throws ItemNotFoundException;
+    User update(UserDTO userDTO) throws ItemNotFoundException;
 }

@@ -30,6 +30,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User update(UserDTO userDTO) throws ItemNotFoundException{
+        User user = userRepository.findByName(userDTO.getName())
+                .orElseThrow(() -> new ItemNotFoundException(userDTO.getName()));
+        return userRepository.save(user);
+    }
+
+    @Override
     public void delete(Long id) throws ItemNotFoundException {
         if (userRepository.existsById(id))
             userRepository.deleteById(id);

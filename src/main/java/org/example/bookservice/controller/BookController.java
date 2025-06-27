@@ -27,5 +27,14 @@ public class BookController {
         return new ResponseEntity<>(savedBook, HttpStatus.OK);
     }
 
+    @PutMapping
+    public ResponseEntity<Book> updateBook(@RequestBody BookDTO bookDTO) {
+        try {
+            Book book = bookService.updateBook(bookDTO);
+            return new ResponseEntity<>(book, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 }

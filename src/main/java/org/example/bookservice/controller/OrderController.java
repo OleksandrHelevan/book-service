@@ -21,8 +21,8 @@ import java.util.List;
 @RequestMapping("/")
 @RequiredArgsConstructor
 public class OrderController {
+
     private final OrderService orderService;
-    private final UserService userService;
 
     @PostMapping("orders")
     public ResponseEntity<Order> createOrder(@RequestBody OrderRequest orderRequest) {
@@ -74,6 +74,5 @@ public class OrderController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
 
 }

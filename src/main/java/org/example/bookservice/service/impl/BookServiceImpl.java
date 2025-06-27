@@ -2,6 +2,7 @@ package org.example.bookservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.bookservice.dto.BookDTO;
+import org.example.bookservice.exception.ItemNotFoundException;
 import org.example.bookservice.mapper.BookMapper;
 import org.example.bookservice.model.Book;
 import org.example.bookservice.repo.BookRepository;
@@ -39,5 +40,11 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    @Override
+    public Book updateBook(BookDTO bookDTO) throws ItemNotFoundException {
+        Book book = bookRepository.findByTitleAndAuthor(bookDTO.getTitle(), bookDTO.getAuthor())
+                .orElseThrow(()-> new ItemNotFoundException("Book not found"));
+        return bookRepository.save(book);
+    }
 
 }
