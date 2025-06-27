@@ -16,12 +16,12 @@ import java.util.List;
 public class BookController {
     private final BookService bookService;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<BookDTO>> getAllBooks() {
         return new ResponseEntity<>(bookService.getBooks(), HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<Book> addOrUpdateBook(@RequestBody BookDTO bookDTO) {
         Book savedBook = bookService.addBook(bookDTO);
         return new ResponseEntity<>(savedBook, HttpStatus.OK);

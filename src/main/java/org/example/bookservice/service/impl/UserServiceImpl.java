@@ -1,5 +1,8 @@
 package org.example.bookservice.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import org.example.bookservice.dto.UserDTO;
+import org.example.bookservice.mapper.UserMapper;
 import org.example.bookservice.model.User;
 import org.example.bookservice.repo.UserRepository;
 import org.example.bookservice.service.UserService;
@@ -8,11 +11,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserDTO> findAll() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserMapper::toDto)
+                .toList();
+    }
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }

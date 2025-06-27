@@ -7,7 +7,6 @@ CREATE TABLE books
     UNIQUE (title, author)
 );
 
-
 INSERT INTO books (title, author, amount)
 VALUES ('To Kill a Mockingbird', 'Harper Lee', 1),
        ('1984', 'George Orwell', 1),
@@ -20,23 +19,31 @@ VALUES ('To Kill a Mockingbird', 'Harper Lee', 1),
        ('Brave New World', 'Aldous Huxley', 1),
        ('The Lord of the Rings', 'J.R.R. Tolkien', 1);
 
-CREATE TABLE borrowed_books
-(
-    id IDENTITY PRIMARY KEY,
-    member_id     BIGINT NOT NULL,
-    book_id       BIGINT NOT NULL,
-    borrowed_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_member FOREIGN KEY (member_id) REFERENCES members (id) ON DELETE RESTRICT,
-    CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE,
-
-    UNIQUE (member_id, book_id)
-);
-
-
 CREATE TABLE members
 (
     id IDENTITY PRIMARY KEY,
     name            VARCHAR(255) NOT NULL,
     membership_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO members (name)
+VALUES ('John Smith'),
+       ('Alice Johnson'),
+       ('Robert Brown'),
+       ('Emily Davis'),
+       ('Michael Wilson'),
+       ('Sarah Miller'),
+       ('David Moore'),
+       ('Olivia Taylor'),
+       ('James Anderson'),
+       ('Sophia Thomas');
+
+CREATE TABLE borrowed_books
+(
+    id IDENTITY PRIMARY KEY,
+    member_id     BIGINT NOT NULL,
+    book_id       BIGINT NOT NULL,
+
+    CONSTRAINT fk_member FOREIGN KEY (member_id) REFERENCES members (id) ON DELETE RESTRICT,
+    CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE,
 );

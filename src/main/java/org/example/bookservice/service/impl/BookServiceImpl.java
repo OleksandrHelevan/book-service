@@ -17,12 +17,18 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDTO> getBooks() {
-        return bookRepository.findAll().stream().map(BookMapper::toDto).toList();
+        return bookRepository.findAll()
+                .stream()
+                .map(BookMapper::toDto)
+                .toList();
     }
 
     @Override
     public Book addBook(BookDTO bookDTO) {
-        Book book = bookRepository.findByTitleAndAuthor(bookDTO.getTitle(), bookDTO.getAuthor()).orElse(null);
+        Book book = bookRepository
+                .findByTitleAndAuthor(bookDTO.getTitle(), bookDTO.getAuthor())
+                .orElse(null);
+
         if (book != null) {
             book.setAmount(book.getAmount() + 1);
             return bookRepository.save(book);
