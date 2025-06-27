@@ -25,6 +25,7 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     @Query("SELECT o.book FROM Order o WHERE o.user.name = :userName")
     List<Book> findBooksByUserName(String userName);
 
+    @Query("SELECT o.book FROM Order o")
     List<Book> findAllBorrowedBooks();
 
     @Query("SELECT o.book, COUNT(o) FROM Order o GROUP BY o.book")
