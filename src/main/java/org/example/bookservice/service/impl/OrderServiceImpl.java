@@ -1,6 +1,7 @@
 package org.example.bookservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.bookservice.exception.AmountIsZeroException;
 import org.example.bookservice.exception.ItemNotFoundException;
 import org.example.bookservice.model.Book;
 import org.example.bookservice.model.Order;
@@ -12,7 +13,6 @@ import org.example.bookservice.request.OrderRequest;
 import org.example.bookservice.service.OrderService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final BookRepository bookRepository;
 
-    public Order makeOrder(OrderRequest orderRequest) {
+    public Order makeOrder(OrderRequest orderRequest) throws AmountIsZeroException, ItemNotFoundException {
 
         User user = userRepository.findById(orderRequest.userId())
                 .orElseThrow(() -> new ItemNotFoundException("User not found"));
@@ -33,8 +33,36 @@ public class OrderServiceImpl implements OrderService {
         Book book = bookRepository.findById(orderRequest.bookId())
                 .orElseThrow(() -> new ItemNotFoundException("Book not found"));
 
-        return orderRepository.makeOrder(user,book);
+        if(book.getAmount() > 0) {
+            book.setAmount(book.getAmount() - 1);
+        }
+        else{
+            throw new AmountIsZeroException("Amount is zero");
+        }
+        return orderRepository.save(new Order(null, user, book));
+    }
+
+    public List<Book> getBooksByUserId(Long userId) {
+        return orderRepository
+                .findBooksByUserId(userId)
+                .orElseThrow(() -> new ItemNotFoundException("Books not found"));
+    }
+
+    public Order deleteOrderById(Long orderId) throws ItemNotFoundException {
+
+        Book book = bookRepository.findById(orderId)
+                .orElseThrow(() -> new ItemNotFoundException("Book not found"));
+        book.setAmount(book.getAmount() + 1);
+
+        return orderRepository.
+                deleteOrderById(orderId)
+                .orElseThrow(() -> new ItemNotFoundException("Order not found"));
     }
 
 
+    public List<Order> getOrdersByUserId(Long userId) throws ItemNotFoundException {
+        return orderRepository.findOrdersByUserId(userId)
+                .orElseThrow(() -> new ItemNotFoundException("Orders not found"));
+    }
 }
+

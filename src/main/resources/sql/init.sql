@@ -45,5 +45,5 @@ CREATE TABLE orders
     book_id       BIGINT NOT NULL,
 
     CONSTRAINT fk_member FOREIGN KEY (member_id) REFERENCES members (id) ON DELETE RESTRICT,
-    CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE,
+    CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE
 );
